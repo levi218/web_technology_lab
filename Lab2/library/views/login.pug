@@ -1,0 +1,16 @@
+doctype html
+html
+	include head.pug
+	body
+		div(class="w3-card-4 w3-third" style="float: none; margin: auto;")
+			div(class="w3-container w3-green")
+				h1 Login
+			form(action="/login",method="post",class="w3-container")
+				p
+					label(for='username') ID
+					input(type="text",name="username",id="username",class="w3-input w3-border")
+				p
+					label(for='txtPassword') Password
+					input(type="password",name="password",id="password",class="w3-input w3-border")
+				p
+					input(type="submit",value="Submit",class="w3-button w3-white w3-border w3-border-blue w3-margin-top")

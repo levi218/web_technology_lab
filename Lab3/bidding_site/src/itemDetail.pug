@@ -1,0 +1,110 @@
+doctype html
+html
+	include head.pug
+	body
+		include menu.pug
+		
+		div(class="pagebody")
+			h1(class="w3-text-blue") Detail
+			div(class="col")
+				img(src="/img/"+data.picture)
+			div(class="col")
+				h2 Item information 
+				table(class="w3-container w3-large")
+					tr
+						td(style="width:40%"): span(class='label') Name
+						td: span(class='value')= data.name
+					tr
+						td: span(class='label') Author
+						td: span(class='value')= data.author
+					tr
+						td: span(class='label') Bidding Start
+						td: span(class='value')= data.description
+					tr
+						td: span(class='label') Bidding End
+						td: span(class='value')= data.start_price
+					tr
+						td: span(class='label') Start Price
+						td: span(class='value')= data.min_bidding_step
+					tr: td(colspan=2,style="border-bottom:1px solid gray;padding:20px;")
+					//- tr
+					//- 	td(style="height:75px;"): span(class='label',id="time_label") Time left
+					//- 	td: span(class='value',id="time_value") 
+
+					//- tr
+					//- 	td: span(class='label') Highest price
+					//- 	td: span(class='value') data.participants.length>0?data.participants[0].price:data.start_price
+					//- tr
+					//- 	td: span(class='label') Bidder's name
+					//- 	if data.participants.length>0
+					//- 		td: span(class='value') data.participants.length>0?data.participants[0].price:data.start_price
+					tr
+						td
+							button(class="w3-button w3-white w3-border w3-border-blue",style="width:150px",onClick="deleteOffer()") Delete
+						td
+							a(class="w3-button w3-white w3-border w3-border-blue",style="width:150px",href="/edit/"+data.itemId) Edit
+		script.
+			var id= #{data.itemId};
+			//- $(document).ready(function() {
+			//- 	var start_time = new Date("#{data.start_time}"); 
+			//- 	var timeout = #{data.timeout}
+			//- 	var info_time = #{data.info_time}
+			//- 	var _countdown = #{data.countdown}
+			//- 	var state = 0;
+			//- 	var timeR = 1;
+			//- 	function updateState(){
+			//- 		let now = new Date();
+			//- 		timeR = parseInt((now - start_time) / 1000);					
+			//- 		switch(state){
+			//- 			case 0:
+			//- 				if(timeR<0){
+			//- 					$("#time_label").text("Time until auction start: ")
+			//- 					$("#time_value").text(formatTime(-timeR)+" sec")
+			//- 					break;
+			//- 				}else{
+			//- 					state+=1;
+			//- 				}
+			//- 			case 1:
+			//- 				if(timeR<info_time){
+			//- 					$("#time_label").text("Time left for studying item information: ")
+			//- 					$("#time_value").text(formatTime(info_time-timeR)+" sec")
+			//- 					break;
+			//- 				}else{
+			//- 					state+=1;
+			//- 				}
+			//- 			case 2:
+			//- 				if(timeR<timeout+info_time){
+			//- 					$("#time_label").text("Time left until aution ends: ")
+			//- 					$("#time_value").text(formatTime(timeout+info_time-timeR)+" sec")
+			//- 					break;
+			//- 				}else{
+			//- 					state+=1;
+			//- 				}
+			//- 			default: 
+			//- 				$("#time_label").text("Auction ended")
+			//- 				break;
+			//- 		}
+			//- 	console.log(start_time+" "+timeout+" "+info_time+" "+state+" "+timeR)
+			//- 	}
+			//- 	updateState();
+			//- 	setInterval(updateState,1000);
+			//- });
+			function formatTime(sec){
+				let min = (sec/60)>>0;
+				sec=sec%60;
+				let hour = (min/60)>>0;
+				min=min%60;
+				let day = (hour/24)>>0
+				hour = hour%24;
+				return day+" days "+(hour<10?("0"+hour):hour)+":"+(min<10?("0"+min):min)+":"+(sec<10?("0"+sec):sec)
+				
+			}
+
+			function deleteOffer(){
+				sendRequest('/items','DELETE',id,deleteCallback);
+			}
+			function deleteCallback(){
+				window.location.href = "/";
+			}
+
+			

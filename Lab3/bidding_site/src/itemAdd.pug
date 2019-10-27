@@ -1,0 +1,113 @@
+doctype html
+html
+	include head.pug
+	body
+		include menu.pug
+		div(class="w3-container w3-margin")
+			h1(class="w3-text-blue") Create new auction
+			form(class="w3-container w3-half")
+				h2 Item information
+				p
+					label(for="name") Item Name
+					input(id='name',type='text',class="w3-input w3-border")
+				p
+					label(for="author") Author
+					input(id='author',type='text',class="w3-input w3-border")
+				p
+					label(for="description") Description
+					input(id='description',type='text',class="w3-input w3-border")
+				p
+					label(for="demoPicture") Demo picture
+					input(id='demoPicture',type='file',accept="image/png, image/jpeg",class="w3-input w3-border")
+				p
+					label(for="start_price") Start price
+					input(id='start_price',type='text',class="w3-input w3-border")
+				p
+					label(for="min_bidding_step") Minimum bidding step
+					input(id='min_bidding_step',type='text',class="w3-input w3-border")
+				
+				//- h2 Auction setting
+				//- p
+				//- 	label(for="start_time") Start the auction on
+				//- 	input(id='start_time',type='datetime-local',class="w3-input w3-border")
+				//- p
+				//- 	label(for="timeout") Auction timeout after (seconds)
+				//- 	input(id='timeout',type='text',class="w3-input w3-border")
+				//- p
+				//- 	label(for="info_time") Information time (seconds)
+				//- 	input(id='info_time',type='text',class="w3-input w3-border")
+				//- p
+				//- 	label(for="countdown") Countdown (seconds)
+				//- 	input(id='countdown',type='text',class="w3-input w3-border")
+				p
+					button(type="button",onClick="add()",id="btnSend",class="w3-button w3-border w3-right w3-third w3-margin w3-border-blue") Add
+		script.
+			//- function zeroPadded(val) {
+			//- 	if (val >= 10)
+			//- 		return val;
+			//- 	else
+			//- 		return '0' + val;
+			//- }
+			//- function dateToString(d){
+			//- 	return d.getFullYear()+"-"+zeroPadded(d.getMonth() + 1)+"-"+zeroPadded(d.getDate())+"T"+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds()
+			//- }
+			function initDemo(){
+				//- let start_date = new Date();
+				$("#name").val("Item 1");
+				$("#author").val("Author 1");
+				$("#description").val("Description 1");
+				$("#start_price").val("500");
+				$("#min_bidding_step").val("100");
+				//- $("#start_time").val(dateToString(start_date));
+				//- $("#timeout").val("900");
+				//- $("#info_time").val("120");
+				//- $("#countdown").val("10");
+			}
+			$(document).ready(()=>{
+				initDemo();
+				//- $('#btnSend').click((event)=>{
+				//- 	event.preventDefault();
+				//- 	add();
+				//- });
+			})
+			function add(){
+				var formData = new FormData();
+				formData.append('picture', $('#demoPicture')[0].files[0]);
+
+				formData.append('name',$("#name").val());
+				formData.append('author',$("#author").val());
+				formData.append('description',$("#description").val());
+				formData.append('start_price',$("#start_price").val());
+				formData.append('min_bidding_step',$("#min_bidding_step").val());
+				//- formData.append('item',JSON.stringify({
+				//- 		name: $("#name").val(),
+				//- 		author: $("#author").val(),
+				//- 		description: $("#description").val(),
+				//- 		start_price: parseFloat($("#start_price").val()),
+				//- 		min_bidding_step: parseFloat($("#min_bidding_step").val())
+				//- 	}));
+				//- formData.append('start_time', new Date($("#start_time").val()).toISOString());
+				//- formData.append('timeout', parseFloat($("#timeout").val()));
+				//- formData.append('info_time', parseFloat($("#info_time").val()));
+				//- formData.append('countdown', parseFloat($("#countdown").val()));
+
+				$.ajax({
+					url : '/items',
+					type : 'POST',
+					data : formData,
+					processData: false,  
+					contentType: false,  
+					success : function(data) {
+						console.log(data);
+						redirect("/");
+					},
+					fail: function( jqXHR, textStatus, errorThrown ) {
+						console.log(textStatus);
+						console.log(errorThrown);
+						console.log(jqXHRl);
+					}
+				});
+			}
+			function redirect(url){
+				window.location=url;
+			}

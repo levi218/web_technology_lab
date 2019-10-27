@@ -1,0 +1,38 @@
+doctype html
+html
+	include head.pug
+	body
+		div
+		div(class="w3-bar w3-indigo")
+			a(href="/logout",class="w3-bar-item w3-button w3-hover-blue-gray") Logout
+			a(href="/",class="w3-bar-item w3-button w3-hover-blue-gray") Back to list
+		div(class="w3-container w3-margin")
+			h1(class="w3-text-blue") Edit book information
+			form(class="w3-container w3-half")
+				p
+					label(for="bookId") Id
+					input(id='bookId',type='text',readonly,value=data.bookId,class="w3-input w3-border")
+				p
+					label(for="name") Name
+					input(id='name',type='text',value=data.bookName,class="w3-input w3-border")
+				p
+					label(for="author") Author
+					input(id='author',type='text',value=data.author,class="w3-input w3-border")
+				p
+					label(for="releaseDate") Release Date
+					input(id='releaseDate',type='text',value=data.releaseDate,class="w3-input w3-border")
+				p
+					button(onClick="edit()",class="w3-button w3-border w3-right w3-third w3-margin w3-border-blue") Apply
+		script.
+			function edit(){
+				var newData = {
+					bookId: document.getElementById("bookId").value,
+					bookName: document.getElementById("name").value,
+					author: document.getElementById("author").value,
+					releaseDate: document.getElementById("releaseDate").value
+				}
+				sendRequest('/books','PUT',newData,redirect);
+			}
+			function redirect(){
+				window.location="/";
+			}

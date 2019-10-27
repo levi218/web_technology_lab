@@ -1,0 +1,82 @@
+doctype html
+html
+	include head.pug
+	body
+		include menu.pug
+		div(class="w3-container w3-margin")
+			h1(class="w3-text-blue") Edit offer information
+			form(class="w3-container w3-half")
+				p
+					label(for="itemId") Id
+					input(id='itemId',type='text',readonly,value=data.itemId,class="w3-input w3-border")
+				p
+					label(for="name") Item name
+					input(id='name',type='text',value=data.name,class="w3-input w3-border")
+				p
+					label(for="author") Author
+					input(id='author',type='text',value=data.author,class="w3-input w3-border")
+				p
+					label(for="description") Description
+					input(id='description',type='text',value=data.description,class="w3-input w3-border")
+				p
+					label(for="start_price") Start price
+					input(id='start_price',type='text',value=data.start_price,class="w3-input w3-border")
+				p
+					label(for="min_bidding_step") Minimum bidding step
+					input(id='min_bidding_step',type='text',value=data.min_bidding_step,class="w3-input w3-border")
+				
+				//- h2 Auction setting
+				//- p
+				//- 	label(for="start_time") Start the auction on
+				//- 	input(id='start_time',type='datetime-local',class="w3-input w3-border")
+				//- p
+				//- 	label(for="timeout") Auction timeout after (seconds)
+				//- 	input(id='timeout',type='text',value=data.timeout,class="w3-input w3-border")
+				//- p
+				//- 	label(for="info_time") Information time (seconds)
+				//- 	input(id='info_time',type='text',value=data.info_time,class="w3-input w3-border")
+				//- p
+				//- 	label(for="countdown") Countdown (seconds)
+				//- 	input(id='countdown',type='text',value=data.countdown,class="w3-input w3-border")
+
+				p
+					button(type="button",onClick="edit()",class="w3-button w3-border w3-right w3-third w3-margin w3-border-blue") Apply
+		script.
+			var id = #{data.itemId}
+			//- var date = new Date("#{data.start_time}")
+			//- var date_iso = date.toISOString()
+			//- $("#start_time").val(date_iso.substring(0,date_iso.length-1))
+			function edit(){
+				var formData = new FormData();
+				formData.append('itemId',id);
+				formData.append('name',$("#name").val());
+				formData.append('author',$("#author").val());
+				formData.append('description',$("#description").val());
+				formData.append('start_price',$("#start_price").val());
+				formData.append('min_bidding_step',$("#min_bidding_step").val());
+
+				//- formData.append('start_time', $("#start_time").val());
+				//- formData.append('timeout', $("#timeout").val());
+				//- formData.append('info_time', $("#info_time").val());
+				//- formData.append('countdown', $("#countdown").val());
+
+				$.ajax({
+					url : '/items',
+					type : 'PUT',
+					data : formData,
+					processData: false,
+					contentType: false,					
+					success : function(data) {
+						console.log(data);
+						redirect("/detail/"+id);
+					},
+					fail: function( jqXHR, textStatus, errorThrown ) {
+						console.log(textStatus);
+						console.log(errorThrown);
+						console.log(jqXHRl);
+					}
+				});
+			}
+			function redirect(url){
+				window.location=url;
+			}

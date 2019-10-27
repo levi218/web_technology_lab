@@ -1,0 +1,63 @@
+<html>
+	<head>	
+		<link type="text/css" rel="stylesheet" href="style.css">
+		<title>Main</title>
+	</head>
+	<body>
+		<h1>Tetris Game</h1>
+		<div style="text-align: center;">
+			<div class="col">
+				<h2>Player: <span id="playerName"></span></h2>
+				<p>Score: <span id="scoreboard"></span></p>
+				<p>Level: <span id="level"></span></p>
+				<p>Next figure: <canvas id="cvNext" width="120" height="90"></canvas></p>
+				<p>
+					<button type="button" onclick="tetris.init()">NEW GAME</button>
+					<button type="button" onclick="tetris.togglePaused()">PAUSE/START</button>
+				</p>
+				<p><label for="sound"><input id="sound" type="checkbox"/ > Sound enabled?</label></p>
+				<h2>Controls:</h2>
+				<ul>
+					<li>Arrow UP: Rotate figure</li>
+					<li>Arrow RIGHT, DOWN, LEFT: Move the figure</li>
+				</ul>
+				
+			</div>
+			<div class="col">
+				<canvas id="playground" width="300" height="600"></canvas>
+			</div>
+		</div>
+		<script type="text/javascript" src="scripts/coordinate.js"></script>
+		<script type="text/javascript" src="scripts/brick.js"></script>
+		<script type="text/javascript" src="scripts/game.js"></script>
+		<script type="text/javascript">
+			function loadPlayerName(){
+				document.getElementById("playerName").textContent = localStorage["tetris.username"];
+			}
+
+			loadPlayerName();
+
+			var tetris = new Tetris(
+					document.getElementById("playground"), 
+					document.getElementById("cvNext"), 
+					document.getElementById("scoreboard"),
+					document.getElementById("level")
+				);
+
+			const cbSound = document.getElementById("sound");
+			cbSound.checked = (localStorage["tetris.sound"]=="true");
+			tetris.setSoundEnabled(cbSound.checked);
+
+			cbSound.addEventListener('click', function(e) {
+				tetris.setSoundEnabled(cbSound.checked);
+				localStorage["tetris.sound"] = 	cbSound.checked;	
+			});
+
+			tetris.gameLoop();
+
+			document.addEventListener('keydown', (event)=>{
+				tetris.keyboardHandler(event.key);
+			});
+		</script>
+	</body>
+</html>

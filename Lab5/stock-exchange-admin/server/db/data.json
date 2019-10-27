@@ -1,0 +1,63 @@
+{
+    "settings": {
+        "start_time": "08:00:00.000",
+        "end_time": "22:00",
+        "recalculate_interval": 500
+    },
+    "brokers": [
+        {
+            "name": "broker1",
+            "cash_reserve": 10000
+        },
+        {
+            "name": "broker2",
+            "cash_reserve": 10000
+        },
+        {
+            "name": "broker3",
+            "cash_reserve": 12345
+        }
+    ],
+    "stocks": [
+        {
+            "symbol": "AAA",
+            "name": "AAAAAA",
+            "distribution_law": "uniform",
+            "max_change": 1.5,
+            "share_available": 200,
+            "share_price": 100
+        },
+        {
+            "symbol": "CCC",
+            "name": "AAAAAA",
+            "distribution_law": "normal",
+            "max_change": 1.5,
+            "share_available": 200,
+            "share_price": 100
+        },
+        {
+            "symbol": "BBB",
+            "name": "AAAAAA",
+            "distribution_law": "uniform",
+            "max_change": 1.5,
+            "share_available": 200,
+            "share_price": 100
+        },
+        {
+            "symbol": "BMMK",
+            "name": "stock 5367",
+            "distribution_law": "normal",
+            "max_change": 1.6,
+            "share_available": 4784,
+            "share_price": 8354
+        },
+        {
+            "symbol": "WXMS",
+            "name": "stock 9887",
+            "distribution_law": "normal",
+            "max_change": 2.38,
+            "share_available": 9526,
+            "share_price": "6666"
+        }
+    ]
+}

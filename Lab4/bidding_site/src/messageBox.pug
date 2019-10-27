@@ -1,0 +1,33 @@
+div#messageDiv
+    h2 Messages
+    div#messageBox
+script.
+    function putNoti(data){
+        let now = new Date();
+        var time = now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds();
+        let newEle = "<span class='notification'>["+time+"] "+data+"</span>"
+        $("#messageBox").html(newEle+$("#messageBox").html())
+    }
+    socket.on("item_changed",(data)=>{
+        putNoti("Current Item: "+JSON.parse(data).name);
+    });
+    socket.on("auction_start",()=>{
+        putNoti("Auction session started!")
+    });
+    socket.on("information_time_over",()=>{
+        putNoti("Information time over")
+    });
+    socket.on("auction_over",()=>{
+        putNoti("Auction time for this item ended")
+    });
+    socket.on("price_changed",(data)=>{
+        putNoti("Current highest bid: "+data)
+    });
+    socket.on("announce_buyer",(data)=>{
+        console.log(data);
+        if(data==null)
+            putNoti("Auction for this item ended without buyer")    
+        else
+            putNoti("Item sold to "+data)
+    });
+

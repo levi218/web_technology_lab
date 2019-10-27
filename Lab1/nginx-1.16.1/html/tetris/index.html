@@ -1,0 +1,27 @@
+<html>
+	<head>	
+		<link type="text/css" rel="stylesheet" href="style.css">
+		<title>Home</title>
+	</head>
+	<body>
+		<h1>Tetris game</h1>
+		<div style="text-align: center;">
+		<form>
+			<label for="playerName">Player Name</label>
+			<input id="playerName" placeholder="Player 1"><br>
+			<button type="button" onclick="store();redirect()">GO!</button>
+		</form>
+		<script>
+			function store(){
+				var name = document.getElementById("playerName").value;
+				localStorage["tetris.username"] = name;
+			}
+			function redirect(){
+				window.location.href = 'main.html';
+			}
+			if(localStorage["tetris.username"]){
+				document.getElementById("playerName").value = localStorage["tetris.username"];
+			}
+		</script>
+	</body>
+</html>

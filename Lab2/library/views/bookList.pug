@@ -1,0 +1,35 @@
+doctype html
+html
+	include head.pug
+	body
+		div(class="w3-bar w3-indigo")
+			a(href="/logout",class="w3-bar-item w3-button w3-hover-blue-gray") Logout
+		
+		div(class="w3-container w3-margin")
+			h1(class="w3-text-blue") Book List
+			a(href="/add",class="w3-button w3-white w3-border w3-border-blue") Add new book
+			div(class="w3-right w3-margin")
+				div(style="border: 1px solid lightgray")
+					form(class="w3-container")
+						p
+							label(for="filterAvailable") Show only available book
+							|     
+							input(class="w3-check w3-border",type="checkbox",id="filterAvailable",onchange="filterChanged()") 
+						p
+							label(for="filterName") Filter by name
+							input(class="w3-input w3-border",type="text",id="filterName",onchange="filterChanged()") 
+						p
+							label(for="filterDueDate") Filter by due date
+							input(class="w3-input w3-border",type="text",id="filterDueDate",onchange="filterChanged()") 
+
+			div(id="bookListTable"): include list.pug
+		script.
+			function filterChanged(){
+				var queryString="?isAvailable="+document.getElementById("filterAvailable").checked+
+								"&name="+document.getElementById("filterName").value+
+								"&dueDate="+document.getElementById("filterDueDate").value;
+				sendRequest('/books'+queryString,'GET',{},reloadTable);
+			}
+			function reloadTable(content){
+				document.getElementById("bookListTable").innerHTML=content;
+			}

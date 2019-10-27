@@ -1,0 +1,45 @@
+body{
+	font-family: verdana;
+	color: #2c003e;
+}
+h1{
+	text-align: center;
+	font-size: 44px;
+	margin: 20px;
+}
+h2{
+	font-size: 24px;
+}
+p{
+	font-size: 20px;
+	vertical-align: text-top;
+}
+.col{
+	vertical-align: text-top;
+	text-align: left;
+	display: inline-block; 
+	margin: 20px; 
+}
+#scoreboard, #level{
+	font-size: 30px;
+}
+#cvNext{
+	display: inline-block;
+	vertical-align: text-bottom;
+}
+label{
+	font-size: 20px;
+	display: block;
+	margin: 15px;
+}
+button{
+	background-color: #4CAF50;
+	border: none;
+	padding: 10px 16px;
+	margin: 15px;
+	color: white;
+	font-size: 14px;
+}
+button:hover{
+	opacity: 0.8;
+}

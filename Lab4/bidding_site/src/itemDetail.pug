@@ -1,0 +1,30 @@
+doctype html
+html
+	include head.pug
+	body
+		include menu.pug
+		
+		div(class="pagebody")
+			h1(class="w3-text-blue") Detail
+			div(class="col")
+				img(src="/img/"+data.picture)
+			div(class="col")
+				h2 Item information 
+				table(class="w3-container w3-large")
+					tr
+						td(style="width:40%"): span(class='label') Name
+						td: span(class='value')= data.name
+					tr
+						td: span(class='label') Author
+						td: span(class='value')= data.author
+					tr
+						td: span(class='label') Bidding Start
+						td: span(class='value')= data.description
+					tr
+						td: span(class='label') Bidding End
+						td: span(class='value')= data.start_price
+					tr
+						td: span(class='label') Start Price
+						td: span(class='value')= data.min_bidding_step
+
+			

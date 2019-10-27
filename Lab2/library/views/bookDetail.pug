@@ -1,0 +1,87 @@
+doctype html
+html
+	include head.pug
+	body
+		div(class="w3-bar w3-indigo")
+			a(href="/logout",class="w3-bar-item w3-button w3-hover-blue-gray") Logout
+			a(href="/",class="w3-bar-item w3-button w3-hover-blue-gray") Back to list
+		div(class="w3-container w3-margin")
+			h1(class="w3-text-blue") Detail Card
+			div(class="w3-container")
+				table(class="w3-container w3-third w3-large")
+					tr
+						td: span(class='label') Name
+						td: span(class='value')= data.bookName
+					tr
+						td: span(class='label') Author
+						td: span(class='value')= data.author
+					tr
+						td: span(class='label') Release Date
+						td: span(class='value')= data.releaseDate
+					tr
+						td: span(class='label') Is Available
+						td: span(class='value')= data.isAvailable?"Yes":"No"
+
+			h2 Lending List
+			table(class="w3-table w3-striped w3-bordered")
+				tr(class="w3-blue")
+					th Name
+					th Lending Date
+					th Due Date
+					th Return Date
+				each p in data.lendingList
+					tr
+						td= p.name
+						td= p.lendingDate
+						td= p.dueDate
+						td= p.returnDate
+			p 
+				if data.isAvailable
+					button(onClick="lend()",class="w3-button w3-white w3-border w3-border-blue",style="width:100%") Lend
+				else
+					button(onClick="returnBook()",class="w3-button w3-white w3-border w3-border-blue",style="width:100%") Return
+		script.
+			var id= #{data.bookId};
+			var person;
+			var dueDate;
+			var today = new Date();
+			function lend(){
+				person = prompt("Please enter reader's name", "Reader");
+				if(person==null) return;
+				var rd = new Date();
+				rd.setDate(rd.getDate()+7);
+				dueDate = prompt("Enter due date", rd.getDate()+'/'+(rd.getMonth()+1)+'/'+rd.getFullYear());
+				if(dueDate==null) return;
+
+				sendRequest('/books/'+id,'GET',{},editLendingList);
+			}
+			function editLendingList(data){
+				var newData = JSON.parse(data);
+				newData.isAvailable = false;
+				newData.lendingList.unshift({
+					name: person,
+					lendingDate: today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear(),
+					dueDate: dueDate,
+					returnDate: null
+				});
+				console.log(newData);
+				sendRequest('/books','PUT',newData,redirect);
+			}
+
+			function returnBook(){
+				sendRequest('/books/'+id,'GET',{},editLendingList2);
+			}
+			function editLendingList2(data){
+				var newData = JSON.parse(data);
+				newData.isAvailable = true;
+				if(newData.lendingList.length>0){
+					newData.lendingList[0].returnDate=today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear();
+					console.log(newData);
+				}
+				sendRequest('/books','PUT',newData,redirect);
+			}
+
+			function redirect(){
+				window.location.href='/';
+			}
+			

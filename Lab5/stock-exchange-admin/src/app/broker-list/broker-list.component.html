@@ -1,0 +1,51 @@
+<div class="container pt-5">
+    <h1>Brokers</h1>
+    <button type="button" class="btn btn-outline-dark my-4" *ngIf="!showFormAdd" (click)="showFormAdd = true">Add new broker</button>
+    <div class="my-5" *ngIf="showFormAdd">
+        <h3>New broker information</h3>
+        <div class="form-group">
+            <label>Broker name:
+            </label>
+            <input class="form-control" type="text" [(ngModel)]="brokerAdd.name" />
+        </div>
+        <div class="form-group">
+            <label>Cash reserve:
+            </label>
+            <input class="form-control" type="number" [(ngModel)]="brokerAdd.cash_reserve" />
+        </div>
+        <div class="form-group">
+            <button class="btn btn-outline-dark btn-block" (click)="add()">
+                Add
+            </button>
+            <button class="btn btn-outline-dark btn-block" (click)="showFormAdd = false">
+                Cancel
+            </button>
+        </div>
+    </div>
+    <table class="table" style="table-layout: fixed">
+        <thead class="thead-dark">
+            <th class="w-50">Name</th>
+            <th class="w-25">Cash reserve</th>
+            <th class="w-25"></th>
+        </thead>
+        <tr *ngFor="let broker of brokerList">
+            <ng-container *ngIf="!isEditting(broker); else editModeTemplate">
+                <td>{{broker.name}}</td>
+                <td>{{broker.cash_reserve}}</td>
+                <td>
+                    <button class="btn btn-outline-dark w-50" (click)="delete(broker)">Delete</button>
+                    <button class="btn btn-outline-dark w-50" (click)="editMode(broker)">Edit</button>
+                </td>
+            </ng-container>
+            <ng-template #editModeTemplate>
+                <td>{{brokerEdit.name}}</td>
+                <td><input type="number" [(ngModel)]="brokerEdit.cash_reserve" /></td>
+                <td>
+                    <button class="btn btn-outline-dark w-50" (click)="editApply()">Apply</button>
+                    <button class="btn btn-outline-dark w-50" (click)="editCancel()">Cancel</button>
+                </td>
+            </ng-template>
+
+        </tr>
+    </table>
+</div>

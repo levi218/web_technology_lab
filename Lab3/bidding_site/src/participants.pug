@@ -1,0 +1,86 @@
+doctype html
+html
+	include head.pug
+	body
+		include menu.pug
+		
+		div(class="pagebody")
+			h1(class="w3-text-blue") Participants
+			div#participants: include participantList.pug
+			h3 New participant
+			form(class="w3-container w3-half")
+				p
+					label(for="name") Name
+					input(id="name",class="w3-input w3-border")
+				p
+					label(for="reserve") Cash Reserve
+					input(id="reserve",class="w3-input w3-border")
+				p
+					button(type="button",class="w3-button w3-white w3-border w3-border-blue",onClick="addParticipant()") Add
+
+		script.
+			$(document).ready(function(){setupButtons()});
+			function setupButtons(){
+				$(".btnEditParticipant").click(function () {
+					let newReserve = prompt("New value", $(this).data("reserve"));
+					let name = $(this).data("name");
+					var formData = new FormData();
+					formData.append('name', name);
+					formData.append('money_reserve', newReserve);
+					$.ajax({
+						url : "/participants",
+						type : 'PUT',
+						data : formData,
+						processData: false,
+						contentType: false,
+						success : function(data) {
+							console.log(data);
+							$("#participants").html(data)
+							setupButtons()
+						}
+					});
+				});
+				$(".btnDeleteParticipant").click(function () {
+					let name = $(this).data("name");
+					let formData = new FormData();
+					formData.append('name', name);
+					$.ajax({
+						url : "/participants",
+						type : 'DELETE',
+						data : formData,
+						processData: false,
+						contentType: false,
+						success : function(data) {
+							console.log(data);
+							$("#participants").html(data)
+							setupButtons()
+						}
+					});
+				});
+			}
+			function addParticipant(){
+				var formData = new FormData();
+				formData.append('name', $('#name').val());
+				formData.append('money_reserve', $('#reserve').val());
+				$('#name').val("")
+				$('#reserve').val("")
+				$.ajax({
+					url : "/participants",
+					type : 'POST',
+					data : formData,
+					processData: false,
+					contentType: false,
+					success : function(data) {
+						console.log(data);
+						$("#participants").html(data)
+						setupButtons()
+					},
+					fail: function( jqXHR, textStatus, errorThrown ) {
+						console.log(textStatus);
+						console.log(errorThrown);
+						console.log(jqXHRl);
+					}
+				});
+			}
+
+			

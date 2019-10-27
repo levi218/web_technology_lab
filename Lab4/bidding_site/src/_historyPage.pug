@@ -1,0 +1,14 @@
+doctype html
+html
+	include head.pug
+	body
+		include menu.pug
+
+		div(class="pagebody")
+			h1 Purchase history
+			div
+				each item in items
+					a(href="/detail/"+item.itemId,class="item")
+						img(src="/img/"+item.picture)
+						span(class="itemName")= item.name
+						span= "Price:" + (item.soldTo?item.soldTo.price:"")

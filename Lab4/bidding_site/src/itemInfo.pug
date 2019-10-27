@@ -1,0 +1,21 @@
+if item!=null
+    div(class="col")
+        img(src="/img/"+item.picture)
+    div(class="col")
+        h2 Item information 
+        table(class="w3-container w3-large")
+            tr
+                td(style="width:40%"): span(class='label') Name
+                td: span(class='value')= item.name
+            tr
+                td: span(class='label') Author
+                td: span(class='value')= item.author
+            tr
+                td: span(class='label') Bidding Start
+                td: span(class='value')= item.description
+            tr
+                td: span(class='label') Bidding End
+                td: span(class='value')= item.start_price
+            tr
+                td: span(class='label') Start Price
+                td: span(class='value')= item.min_bidding_step

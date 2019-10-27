@@ -1,0 +1,31 @@
+doctype html
+html
+	include head.pug
+	body
+		include menu.pug
+
+		div(class="pagebody")
+			h1 Participants
+			div#bidderList
+				include participantList.pug
+			h1 Items
+			div#itemList
+				include itemList.pug
+			
+			include messageBox.pug
+		script.
+			function reloadParticipantList(){
+				//call ajax to refresh view
+				$.get("/current_participants", function(data){
+					$("#bidderList").html(data); 
+				});
+			}
+			function reloadItemList(){
+				//call ajax to refresh view
+				$.get("/items", function(data){
+					$("#itemList").html(data);
+				});
+			}			
+			socket.on("balance_updated",()=>{
+				reloadItemList();
+			})

@@ -1,0 +1,82 @@
+doctype html
+html
+	include head.pug
+	body
+		include menu.pug
+		div(class="pagebody")
+			div#itemInfo
+				include itemInfo.pug
+			if status!=2
+				h4
+					span#time Time status: .....
+					span#countdown
+			else
+				h4 All auctions have ended
+			h4#balance Your balance: #{user.money_reserve}
+			if item!=null
+				p#biddingPanel
+					label(for="price") Your price
+					input(type="text",id="price",class="w3-input")
+					button(type="button",onClick="sendBid()",class="w3-button w3-blue") Send bid
+			include messageBox.pug
+			div(id="dialog",title="Message")
+				p#dialogContent a
+		script.
+			function reloadItemInfo(){
+				//call ajax to refresh view
+				$.get("/current_item", function(data){
+					console.log(data)
+					if(data.length<10){
+						$("#time").html("");	
+					}
+					$("#itemInfo").html(data);
+				});
+			}
+			$(function() {
+				$( "#dialog" ).dialog({
+					autoOpen : false, modal : true, show : "blind", hide : "blind"
+				});
+			});
+			function sendBid(){
+				let price = $("#price").val();
+				$.post("/bid", {price: price}, function(result){
+					if(result.status && result.status=="ok"){
+						console.log("ok");
+						$( "#dialogContent" ).html("Send offer successfully");
+						$("#dialog").dialog("open");
+					}else{
+						$( "#dialogContent" ).html(result.error);
+						$("#dialog").dialog("open");
+					}
+					$("#price").val("");
+				});
+			}
+			// reload money implemented as socketio event when item sold
+			
+			socket.on("session_ended",()=>{
+				$("#itemInfo").html(" ");
+				$("#biddingPanel").html(" ");
+				$("#time").html("All auctions have ended");
+			});
+			socket.on("item_changed",()=>{
+				reloadItemInfo();
+				$("#countdown").html(" ");
+			});
+			socket.on("balance_updated",()=>{
+				$.get("/user_info", function(data){
+					$("#balance").html("Your balance: "+data.user.money_reserve);
+				});
+			})
+			socket.on("auction_start_cd",(time)=>{
+				$("#time").html("Countdown until auction start: "+time)
+			});
+			socket.on("information_time_cd",(time)=>{
+				console.log(time)
+				$("#time").html("Countdown until information time end: "+time)
+			});
+			socket.on("auction_time_cd",(time)=>{
+				$("#time").html("Countdown until auction on this item end: "+time)
+			});
+			socket.on("countdown",(time)=>{
+				$("#countdown").html("Countdown until auction end: "+time)
+			});

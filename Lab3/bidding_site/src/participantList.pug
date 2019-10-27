@@ -1,0 +1,12 @@
+table(class="w3-table w3-large")
+    tr
+        th Name
+        th Cash reserve
+        th Action
+    for p in data
+        tr
+            td= p.name
+            td= p.money_reserve
+            td
+                button(type="button",data-name=p.name,data-reserve=p.money_reserve,class="btnEditParticipant w3-button w3-white w3-border w3-border-blue") Edit
+                button(type="button",data-name=p.name,class="btnDeleteParticipant w3-button w3-white w3-border w3-border-blue") Delete

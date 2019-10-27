@@ -1,0 +1,27 @@
+<html>
+	<head>
+		<link type="text/css" rel="stylesheet" href="style.css">
+		<style type="text/css">
+			ol{font-size: 25px;}
+			a{font-size: 25px;}	
+		</style>
+	</head>
+	<body>
+		<h1>Scoreboard</h1>
+		<div class="col">
+			<div id="record"></div>
+			<a href="index.html">Back to index..</a>
+		</div>
+		<script>
+			var records = JSON.parse(localStorage["tetris.records"]);
+			var htmlContent = "<ol>";
+			if(records && records!=null){
+				for(var i = 0;i<records.length;i++){
+					htmlContent+="<li>"+records[i].name+"      "+records[i].score+"</li>"
+				}
+			}
+			htmlContent+="</ol>";
+			document.getElementById("record").innerHTML = htmlContent;
+		</script>
+	</body>
+</html>
