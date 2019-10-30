@@ -113,7 +113,14 @@ router.post("/stocks/buy", (req, res) => {
 		res.status(200).json({ error: "Quantity greater than available" })
 		return;
 	}
+	
+	if (!broker.balance) broker.balance = broker.cash_reserve
+	if(!wanted_stock.total_share) wanted_stock.total_share = wanted_stock.share_available
 
+	if(broker.balance<wanted_stock.share_price * command.quantity){
+		res.status(200).json({ error: "Balance not enough" })
+		return;
+	}
 	// add to history
 	if (!broker.owned) broker.owned = [];
 	let stock = broker.owned.find(p => p.symbol == command.symbol);
@@ -130,7 +137,6 @@ router.post("/stocks/buy", (req, res) => {
 	})
 	res.status(200).json({ status: 0 })
 	//subtract from stock
-	if (!broker.balance) broker.balance = broker.cash_reserve
 	broker.balance -= wanted_stock.share_price * command.quantity
 	wanted_stock.share_available -= command.quantity;
 });
@@ -138,37 +144,42 @@ router.post("/stocks/buy", (req, res) => {
 router.post("/stocks/sell", (req, res) => {
 	const command = req.body
 	//check existence
-	// let d_stock = getStock(command.symbol)
-	// let broker = db.data.brokers.find(b => b.name == command.broker);
-	// if (!broker || !wanted_stock) {
-	// 	res.status(200).json({ error: "Cant find broker or stock" })
-	// 	return;
-	// }
+	let selling_stock = getStock(command.symbol)
+	let broker = db.data.brokers.find(b => b.name == command.broker);
+	if (!broker || !selling_stock) {
+		res.status(200).json({ error: "Cant find broker or stock" })
+		return;
+	}
 	// check availability
-	// if (command.quantity > wanted_stock.share_available) {
-	// 	res.status(200).json({ error: "Quantity greater than available" })
-	// 	return;
-	// }
+	let owned_quantity = 0;
+	if (!broker.owned) {
+		res.status(200).json({ error: "Not owning any share of this stock" })
+		return;
+	}
+	let owned_stock = broker.owned.find(s => s.symbol == command.symbol)
+	if (!owned_stock) {
+		res.status(200).json({ error: "Not owning any share of this stock" })
+		return;
+	}
+	owned_stock.history.forEach(element => {
+		owned_quantity += element.quantity;
+	});
+	if (command.quantity > owned_quantity) {
+		res.status(200).json({ error: "Quantity greater than owned quantity" })
+		return;
+	}
 
-	// // add to history
-	// if (!broker.owned) broker.owned = [];
-	// let stock = broker.owned.find(p => p.symbol == command.symbol);
-	// if (!stock) {
-	// 	stock = {
-	// 		symbol: command.symbol,
-	// 		history: []
-	// 	}
-	// 	broker.owned.push(stock);
-	// }
-	// stock.history.push({
-	// 	bought_price: wanted_stock.share_price * command.quantity,
-	// 	quantity: command.quantity
-	// })
-	// res.status(200).json({ status: 0 })
+	// add to history
+	owned_stock.history.push({
+		bought_price: -selling_stock.share_price * command.quantity,
+		quantity: -command.quantity
+	})
 	// //subtract from stock
-	// if (!broker.balance) broker.balance = broker.cash_reserve
-	// broker.balance -= wanted_stock.share_price * command.quantity
-	// wanted_stock.share_available -= command.quantity;
+	if (!broker.balance) broker.balance = broker.cash_reserve
+	broker.balance += selling_stock.share_price * command.quantity
+	selling_stock.share_available += command.quantity;
+
+	res.status(200).json({ status: 0 })
 });
 
 

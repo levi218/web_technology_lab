@@ -77,6 +77,16 @@ export function requestSell(symbol, quantity) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ broker: getState().currentUser, symbol: symbol, quantity: quantity }) // body data type must match "Content-Type" header
+    }).then(response => response.json())
+    .then(response => {
+      if (response.status == 0) {
+        //success
+        // refresh data
+        dispatch(fetchData());
+      } else {
+        //error
+        window.alert(response.error)
+      }
     });
   }
 }

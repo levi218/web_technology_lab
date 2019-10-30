@@ -10,28 +10,6 @@
             "cash_reserve": 10000,
             "balance": 10000,
             "owned": [
-                {
-                    "symbol": "AAA",
-                    "history": [
-                        {
-                            "bought_price": 123,
-                            "quantity": 15
-                        },
-                        {
-                            "bought_price": 98,
-                            "quantity": 15
-                        }
-                    ]
-                },
-                {
-                    "symbol": "CCC",
-                    "history": [
-                        {
-                            "bought_price": 111,
-                            "quantity": 20
-                        }
-                    ]
-                }
             ]
         }
     ],

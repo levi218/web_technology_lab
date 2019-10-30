@@ -34,6 +34,7 @@ export class StockList extends Component {
                                 <td>{stock.share_price}</td>
                                 <td>
                                     <button type="button" onClick={()=>buy(stock.symbol)}>Buy</button>
+                                    <span>{stock.isOwned}</span>
                                 </td>
                             </tr>
                         )}
@@ -45,7 +46,13 @@ export class StockList extends Component {
 }
 
 const mapStateToProps = (state) => {
-    return { stocks: state.data.stocks }
+    let stocks = [...state.data.stocks]
+    let curBroker = state.data.brokers.find(b=>b.name===state.currentUser)
+    stocks.forEach(stock=>{
+        let isOwned = curBroker.owned.findIndex(s=>s.name===stock.name)!=-1
+        stock.isOwned = isOwned
+    })
+    return { stocks }
 }
 
 const mapDispatchToProps = dispatch => {
