@@ -10,7 +10,7 @@ export class StockService {
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
-  private apiUrl = 'http://localhost:3000/stocks';
+  private apiUrl = 'http://localhost:8888/stocks';
   constructor(private http: HttpClient) { }
     
   getStocks(): Observable<Stock[]>{

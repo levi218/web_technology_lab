@@ -10,7 +10,7 @@ export class BrokerService {
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
-  private apiUrl = 'http://localhost:3000/brokers';
+  private apiUrl = 'http://localhost:8888/brokers';
   constructor(
     private http: HttpClient) { }
 

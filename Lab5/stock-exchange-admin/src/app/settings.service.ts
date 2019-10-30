@@ -10,7 +10,7 @@ export class SettingsService {
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
-  private apiUrl = 'http://localhost:3000/settings';
+  private apiUrl = 'http://localhost:8888/settings';
   constructor(private http: HttpClient) { }
     
   getSettings(): Observable<Settings>{
