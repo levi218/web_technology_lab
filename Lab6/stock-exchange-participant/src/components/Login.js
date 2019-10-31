@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { login } from '../actions'
+import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom'
+import {Form} from 'react-bootstrap'
 
 export class Login extends Component {
     static propTypes = {
@@ -17,7 +18,9 @@ export class Login extends Component {
     handleChange(event) {
         switch (event.target.id) {
             case 'txtId':
-                this.setState({...this.state,  userId: event.target.value });
+                this.setState({ ...this.state, userId: event.target.value });
+                break;
+            default:
                 break;
         }
     }
@@ -25,12 +28,15 @@ export class Login extends Component {
         const { login } = this.props
         return (
             <div>
-                <label for="txtId">ID</label>
-                <input type="text" id='txtId' value={this.state.userId} onChange={this.handleChange} />
-                <button type="button" onClick={() => {
+                <h1 className="float-none">Login</h1>
+                <Form.Group controlId="txtId">
+                    <Form.Label>Your name</Form.Label>
+                    <Form.Control type="text" value={this.state.userId} onChange={this.handleChange} />
+                </Form.Group>
+                <Link className="btn btn-primary float-right" to="/" onClick={() => {
                     login(this.state.userId)
                 }
-                }>Login</button>
+                }>Login</Link>
             </div>
         )
     }

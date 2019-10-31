@@ -24,7 +24,12 @@ export class BrokerListComponent implements OnInit {
     this.showFormAdd = false;
     this.getBrokers();
   }
-
+  generateRandomDefault():void{
+    this.brokerAdd = {
+      "name": "broker "+Math.floor(Math.random()*10000),
+      "cash_reserve": Math.floor(Math.random()*10000)
+    }as Broker;
+  }
   getBrokers() : void {
     this.brokerService.getBrokers().subscribe(brokers => this.brokerList = brokers);
   }
@@ -33,7 +38,8 @@ export class BrokerListComponent implements OnInit {
     this.brokerService.addBroker(this.brokerAdd)
       .subscribe(brokers => {
         this.brokerList = brokers;
-        this.brokerAdd = new Broker;
+        this.showFormAdd = false;
+        this.generateRandomDefault();
       });
   }
 

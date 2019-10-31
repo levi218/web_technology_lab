@@ -1,5 +1,5 @@
 import {
-  REQUEST_DATA, RECEIVE_DATA, REQUEST_BUY, LOGGED_IN, LOG_OUT
+  REQUEST_DATA, RECEIVE_DATA, LOGGED_IN, LOG_OUT
 } from '../actions'
 
 const initialState = {
@@ -23,7 +23,6 @@ export default function (state = initialState, action) {
       };
     }
     case RECEIVE_DATA: {
-      console.log("received data")
       return {
         ...state,
         isFetching: false,

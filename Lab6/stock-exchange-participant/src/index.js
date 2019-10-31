@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import Root from './components/Root';
 import { createStore, applyMiddleware } from 'redux'
 import reducer from './reducers';
@@ -8,6 +7,8 @@ import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
 import { createStateSyncMiddleware, initStateWithPrevTab } from 'redux-state-sync';
 import { withReduxStateSync } from 'redux-state-sync'
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import './index.css';
 
 const config = {
 }

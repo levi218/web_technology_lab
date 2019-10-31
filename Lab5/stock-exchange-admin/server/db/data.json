@@ -1,58 +1,82 @@
 {
     "settings": {
-        "start_time": "08:00:00.000",
+        "start_time": "09:00",
         "end_time": "22:00",
-        "recalculate_interval": 500
+        "recalculate_interval": 15,
+        "enabledExchange": true
     },
     "brokers": [
         {
             "name": "broker1",
             "cash_reserve": 10000,
             "balance": 10000,
-            "owned": [
-            ]
+            "owned": []
+        },
+        {
+            "name": "broker 9765",
+            "cash_reserve": 5415
         }
     ],
     "stocks": [
         {
             "symbol": "AAA",
-            "name": "AAAAAA",
+            "name": "Stock A",
             "distribution_law": "uniform",
             "max_change": 1.5,
             "share_available": 200,
-            "share_price": 100
+            "share_price": 105.16584358296433,
+            "prev_price": 106.69094264611161,
+            "last_change": -1.4294550458757846
         },
         {
             "symbol": "CCC",
-            "name": "AAAAAA",
+            "name": "Stock C",
             "distribution_law": "normal",
             "max_change": 1.5,
             "share_available": 200,
-            "share_price": 100
-        },
-        {
-            "symbol": "BBB",
-            "name": "AAAAAA",
-            "distribution_law": "uniform",
-            "max_change": 1.5,
-            "share_available": 200,
-            "share_price": 100
+            "share_price": 98.97932115214685,
+            "prev_price": 99.26336583609054,
+            "last_change": -0.28615258162081236
         },
         {
             "symbol": "BMMK",
-            "name": "stock 5367",
+            "name": "Stock 5367",
             "distribution_law": "normal",
             "max_change": 1.6,
             "share_available": 4784,
-            "share_price": 8354
+            "share_price": 79.9317214656063,
+            "prev_price": 80.32531784553129,
+            "last_change": -0.4900028913447727
         },
         {
             "symbol": "WXMS",
-            "name": "stock 9887",
+            "name": "Stock 9887",
             "distribution_law": "normal",
             "max_change": 2.38,
             "share_available": 9526,
-            "share_price": "6666"
+            "share_price": 66.34618925228912,
+            "prev_price": 65.58967179571698,
+            "last_change": 1.1534094253869067
+        },
+        {
+            "symbol": "HFER",
+            "name": "stock 4313",
+            "distribution_law": "uniform",
+            "max_change": 1.73,
+            "share_available": 297,
+            "share_price": 149.4759142460135,
+            "prev_price": 150.79137016380207,
+            "last_change": -0.8723681709103203
+        },
+        {
+            "symbol": "ILRC",
+            "name": "stock 8105",
+            "distribution_law": "uniform",
+            "max_change": 2,
+            "share_available": 8718,
+            "share_price": 97.73064030967046,
+            "prev_price": 99.44001652033346,
+            "last_change": -1.7190023397808458
         }
     ]
 }

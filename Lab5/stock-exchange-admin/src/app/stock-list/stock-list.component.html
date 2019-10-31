@@ -69,7 +69,7 @@
                 <td>{{stock.distribution_law}}</td>
                 <td>{{stock.max_change}}</td>
                 <td>{{stock.share_available}}</td>
-                <td>{{stock.share_price}}</td>
+                <td>{{stock.share_price.toFixed(2)}}</td>
                 <td>
                     <button class="btn btn-outline-dark w-50" (click)="delete(stock)">Delete</button>
                     <button class="btn btn-outline-dark w-50" (click)="editMode(stock)">Edit</button>
@@ -92,17 +92,17 @@
                 </td>
                 <td>
                     <div class="form-group">
-                        <input [(ngModel)]="stockEdit.max_change" />
+                        <input type="number" [(ngModel)]="stockEdit.max_change" />
                     </div>
                 </td>
                 <td>
                     <div class="form-group">
-                        <input [(ngModel)]="stockEdit.share_available" />
+                        <input type="number" [(ngModel)]="stockEdit.share_available" />
                     </div>
                 </td>
                 <td>
                     <div class="form-group">
-                        <input [(ngModel)]="stockEdit.share_price" />
+                        <input type="number" [(ngModel)]="stockEdit.share_price" />
                     </div>
                 </td>
                 <td>

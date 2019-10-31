@@ -16,6 +16,7 @@ export class SettingsComponent implements OnInit {
 
   ngOnInit() {
     this.settings = new Settings;
+    this.settingsEdit = new Settings
     this.getSetting();
   }
 
@@ -26,7 +27,7 @@ export class SettingsComponent implements OnInit {
     });
   }
   apply(): void {
-    this.settingsService.updateStock(this.settingsEdit).subscribe(
+    this.settingsService.updateSettings(this.settingsEdit).subscribe(
       ()=>{
         this.settings = this.settingsEdit;
         this.settingsEdit = JSON.parse(JSON.stringify(this.settings));

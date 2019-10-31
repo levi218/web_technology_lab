@@ -35,10 +35,12 @@ export const loggedOut = () => ({
 
 export function login(id) {
   return function (dispatch, getState) {
-    console.log(getState().data.brokers.find(b => b.name == id) != null)
-    if (getState().data.brokers.find(b => b.name == id) != null)
+    if (getState().data.brokers.find(b => b.name === id) != null)
       return dispatch(loggedIn(id));
-    else return null;
+    else {
+      alert("Name not registered");
+      return null;
+    }
   }
 }
 export function logout() {
@@ -57,7 +59,7 @@ export function requestBuy(symbol, quantity) {
       body: JSON.stringify({ broker: getState().currentUser, symbol: symbol, quantity: quantity }) // body data type must match "Content-Type" header
     }).then(response => response.json())
       .then(response => {
-        if (response.status == 0) {
+        if (response.status === 0) {
           //success
           // refresh data
           dispatch(fetchData());
@@ -66,6 +68,28 @@ export function requestBuy(symbol, quantity) {
           window.alert(response.error)
         }
       });
+  }
+}
+
+export function setExchangeStatus(status) {
+  return function (dispatch, getState) {
+    return fetch(`http://localhost:8888/settings`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ enabledExchange: status }) // body data type must match "Content-Type" header
+    }).then(response => response.json())
+    .then(response => {
+      if (response.status === 0) {
+        //success
+        // refresh data
+        dispatch(fetchData());
+      } else {
+        //error
+        window.alert(response.error)
+      }
+    });
   }
 }
 
@@ -79,7 +103,7 @@ export function requestSell(symbol, quantity) {
       body: JSON.stringify({ broker: getState().currentUser, symbol: symbol, quantity: quantity }) // body data type must match "Content-Type" header
     }).then(response => response.json())
     .then(response => {
-      if (response.status == 0) {
+      if (response.status === 0) {
         //success
         // refresh data
         dispatch(fetchData());

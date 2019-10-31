@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 // var passport = require('passport');
 let db = require("./db");
+const random = require("./random");
 var fs = require("fs")
 console.log("Loaded: " + db);
 
@@ -13,71 +14,33 @@ function saveToFile() {
 		}
 	});
 }
-// //views
-// router.get("/"/*,require('connect-ensure-login').ensureLoggedIn()*/,(req,res)=>{
-// 	res.render("index",{/*user: req.user,*/ data: db.data.list});
-// });
 
-// router.get("/brokers"/*,require('connect-ensure-login').ensureLoggedIn()*/,(req,res)=>{
-// 	res.render("brokers",{/*user: req.user,*/ data: db.data.brokers});
-// });
+// update prices over time
+function updatePrice() {
+	db.data.stocks.forEach(stock => {
+		stock.prev_price = stock.share_price;
+		let rand = stock.distribution_law === "uniform" ? random.rnd_unif() : random.rnd_norm();
+		stock.share_price = stock.share_price * (1 + stock.max_change * rand / 100);
+		stock.last_change = rand * stock.max_change;
+	})
+}
 
-// router.get("/settings"/*,require('connect-ensure-login').ensureLoggedIn()*/,(req,res)=>{
-// 	res.render("settings",{/*user: req.user,*/ data: db.data.settings});
-// });
+var interval = null;
+function setExchangeStatus(isActive) {
+	if (isActive === true) {
+		if(interval==null)
+			interval = setInterval(updatePrice, db.data.settings.recalculate_interval * 1000);
+		db.data.settings.enabledExchange = true;
+	}else{
+		if(interval!=null){
+			clearInterval(interval);
+		}
+		interval = null;
+		db.data.settings.enabledExchange = false;
+	}
+}
 
-// router.get("/detail/:id"/*,require('connect-ensure-login').ensureLoggedIn()*/,(req,res)=>{
-// 	let data = db.data.list.find((item)=>{
-// 		return item.itemId==req.params.id;
-// 	});
-// 	if(!data||data==null) res.status(404).end("Page not found");
-// 	// else {
-// 		// var myBidding;
-// 		// // console.log(data.brokers);
-
-// 		// for(let participant of data.brokers){
-// 		// 	if(participant.userId==req.user.username){
-// 		// 		myBidding = participant;   
-// 		// 		break;
-// 		// 	}
-// 		// }
-// 		// res.render("itemDetail",{/*user: req.user,*/ data: data, myBidding: myBidding});
-// 	// }
-// 	res.render("itemDetail",{/*user: req.user,*/ data: data});
-// });
-
-// router.get("/edit/:id"/*,require('connect-ensure-login').ensureLoggedIn()*/,(req,res)=>{
-// 	let data = db.data.list.find((item)=>{
-// 		return item.itemId==req.params.id;
-// 	});
-// 	if(!data||data==null) res.status(404).end("Page not found");
-// 	else res.render("itemEdit",{/*user: req.user,*/ data: data});
-// });
-
-// router.get("/add"/*,require('connect-ensure-login').ensureLoggedIn()*/,(req,res)=>{
-// 	res.render("itemAdd",{/*user: req.user*/});
-// });
-
-// router.get('/login',
-// 	function(req, res){
-// 		if (!req.user)
-// 			res.render('login');
-// 		else res.redirect('/');
-// 	}
-// );
-
-// router.post('/login', 
-// 	passport.authenticate('local', { failureRedirect: '/login' }),
-// 		function(req, res) {
-// 			res.redirect('/');
-// 		}
-// );
-// router.get('/logout',
-// 	function(req, res){
-// 		req.logout();
-// 		res.redirect('/');
-// 	}
-// );
+setExchangeStatus(false);
 
 // //REST for stocks
 router.get("/all", (req, res) => {
@@ -100,6 +63,10 @@ function getStock(symbol) {
 }
 
 router.post("/stocks/buy", (req, res) => {
+	if(!db.data.settings.enabledExchange){
+		res.status(200).json({ error: "Exchange is currently offline" })
+		return;
+	}
 	const command = req.body
 	//check existence
 	let wanted_stock = getStock(command.symbol)
@@ -113,11 +80,11 @@ router.post("/stocks/buy", (req, res) => {
 		res.status(200).json({ error: "Quantity greater than available" })
 		return;
 	}
-	
-	if (!broker.balance) broker.balance = broker.cash_reserve
-	if(!wanted_stock.total_share) wanted_stock.total_share = wanted_stock.share_available
 
-	if(broker.balance<wanted_stock.share_price * command.quantity){
+	if (!broker.balance) broker.balance = broker.cash_reserve
+	if (!wanted_stock.total_share) wanted_stock.total_share = wanted_stock.share_available
+
+	if (broker.balance < wanted_stock.share_price * command.quantity) {
 		res.status(200).json({ error: "Balance not enough" })
 		return;
 	}
@@ -142,6 +109,10 @@ router.post("/stocks/buy", (req, res) => {
 });
 
 router.post("/stocks/sell", (req, res) => {
+	if(!db.data.settings.enabledExchange){
+		res.status(200).json({ error: "Exchange is currently offline" })
+		return;
+	}
 	const command = req.body
 	//check existence
 	let selling_stock = getStock(command.symbol)
@@ -256,9 +227,12 @@ router.get("/settings", (req, res) => {
 router.put("/settings", (req, res) => {
 	let newData = req.body;
 	console.log(newData);
+	if(newData.enabledExchange!=undefined && newData.enabledExchange!=null){
+		setExchangeStatus(newData.enabledExchange)
+	}
 	Object.assign(db.data.settings, newData);
 	saveToFile()
-	res.status(200).end();
+	res.status(200).json({status: 0});
 });
 
 // handle other links

@@ -17,7 +17,7 @@ export class SettingsService {
     return this.http.get<Settings>(this.apiUrl);
   }
 
-  updateStock (settings: Settings): Observable<any> {
+  updateSettings (settings: Settings): Observable<any> {
     return this.http.put(this.apiUrl, settings, this.httpOptions);
   }
 }
