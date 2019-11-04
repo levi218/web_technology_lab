@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Page Title</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <script src='main.js'></script>
+</head>
+
+<body>
+    <canvas id="canvas" width="1000" height="800"></canvas>
+    <script src="constants.js"></script>
+    <script src="utilities.js"></script>
+    <script src="map.js"></script>
+    <script src="character.js"></script>
+    <script src="physics.js"></script>
+    <script src="door.js"></script>
+    <script src="resources.js"></script>
+    <script src="game.js"></script>
+    <script>
+        // init objects and render
+        var canvas = document.getElementById("canvas");
+        var maps = ["map1.map.js", "map2.map.js"]
+        var resources = new Resources();
+        var game = new Game(canvas);
+
+        // get user inputs
+        document.onkeydown = function (e) {
+            if (e.keyCode == 37) {
+                //game.character.moveHorizontal(-1);
+                game.isHolding.left = true;
+            }
+            if (e.keyCode == 39) {
+                // game.character.moveHorizontal(1);
+                game.isHolding.right = true;
+            }
+            if (e.keyCode == 38) {
+                game.isHolding.up = true;
+                // game.character.jump();
+            }
+        }
+        document.onkeyup = function (e) {
+            if (e.keyCode == 37) {
+                game.isHolding.left = false;
+            }
+            if (e.keyCode == 39) {
+                game.isHolding.right = false;
+            }
+            if (e.keyCode == 38) {
+                game.isHolding.up = false;
+            }
+            // game.character.moveHorizontal(0);
+        }
+        game.start()
+    </script>
+</body>
+
+</html>
