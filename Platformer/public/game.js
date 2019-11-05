@@ -9,14 +9,14 @@ class Game {
         canvas.width = this.viewport.width;
         canvas.height = this.viewport.height
         this.current_level = 0;
-        
+
     }
-    initMap(decorative_arr) {
+    initMap(mapFile) {
         // 1 - obstacle
         // 0 - free
         // 2 - player start point
         // 3 - door
-
+        let decorative_arr = mapFile.map;
         let map_arr = []
         decorative_arr.forEach((row, i) => {
             let r = []
@@ -41,31 +41,55 @@ class Game {
         })
         this.isHolding = { left: false, up: false, right: false, down: false }
         this.gameover = false;
-    }
-    render() {
-        let ctx = canvas.getContext("2d");
 
+        this.enemies = []
+        if (mapFile.enemies) {
+            for (let enemyData of mapFile.enemies) {
+                for (let cp of enemyData.checkpoints) {
+                    let cell = this.map.getTileXY(cp.x, cp.y);
+                    cp.x = cell.x+CELL_SIZE/2;
+                    cp.y = cell.y+CELL_SIZE/2;
+                }
+                let enemy = new Enemy(enemyData.checkpoints)
+                this.enemies.push(enemy);
+            }
+        }
+    }
+    update() {
         if (!this.gameover) {
             // apply physical stuffs
             this.physicsManager.apply(this.character, this.map);
 
+
             if (this.door.isCollided(this.character)) {
                 this.gameover = true;
             }
-            // render frame
-            // clear canvas
-            ctx.clearRect(0, 0, canvas.width, canvas.height)
             //move camera
             this.viewport.x = lerp(this.viewport.x, this.character.x + this.character.width / 2);
             this.viewport.y = lerp(this.viewport.y, this.character.y + this.character.height / 2);
 
-            canvas.style.border = "1px solid black";
-            //render
-            this.map.render(canvas, this.viewport);
-            this.door.render(canvas, this.viewport);
-            this.character.render(canvas, this.viewport);
+            for (let enemy of this.enemies) {
+                enemy.update();
+                enemy.tryAttack(this.character);
+            }
         }
     }
+    render() {
+        let ctx = canvas.getContext("2d");
+        // render frame
+        // clear canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+        canvas.style.border = "1px solid black";
+        //render
+        this.map.render(canvas, this.viewport);
+        this.door.render(canvas, this.viewport);
+        this.character.render(canvas, this.viewport);
+        for (let enemy of this.enemies) {
+            enemy.render(canvas, this.viewport);
+        }
+
+    }
+
     processInput() {
         if (!this.gameover) {
             if (this.isHolding.left) this.character.moveHorizontal(-1);
@@ -73,7 +97,7 @@ class Game {
             if (this.isHolding.up) this.character.jump();
         }
     }
-    start(){
+    start() {
         var loading = fetch(maps[this.current_level])
             .then(response => response.json())
             .then(map => game.initMap(map))
@@ -93,7 +117,8 @@ class Game {
                         }
                     }
                     game.processInput()
-                    game.render()
+                    game.update();
+                    game.render();
                 }, DELTA_TIME);
 
             })

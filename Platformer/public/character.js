@@ -3,8 +3,8 @@ class Character {
         console.log("character created")
         this.x = x;
         this.y = y;
-        this.width = CELL_SIZE*3/4;
-        this.height = CELL_SIZE*3/4;
+        this.width = CELL_SIZE * 3 / 4;
+        this.height = CELL_SIZE * 3 / 4;
         this.vx = 0;
         this.vy = 0;
         this.acceleration = ACCELERATION;
@@ -33,6 +33,8 @@ class Character {
         }
         if (this.jump_cd > 0) this.jump_cd -= DELTA_TIME / 1000;
         if (this.walljump_cd > 0) this.walljump_cd -= DELTA_TIME / 1000;
+        if (this.stun_duration > 0) this.stun_duration -= DELTA_TIME / 1000;
+
     }
     //collider with map
     isCollided(map, val) {
@@ -44,16 +46,28 @@ class Character {
                     rect.y < this.y + this.height && // bottom
                     rect.y + rect.height > this.y) { // top
                     // collision detected!
-
                     collisions.push(rect);
                 }
             }
         })
         return collisions;
     }
-
+    //apply force
+    applyVelocity(vx, vy) {
+        this.vx += vx;
+        this.vy += vy;
+        if (this.vx > 5 * MOVE_SPEED_CAP || !isFinite(this.vx)) this.vx = 5 * MOVE_SPEED_CAP
+        if (this.vy > this.jumpSpeed || !isFinite(this.vy)) this.vy = this.jumpSpeed
+        if (this.vx < 5 * MOVE_SPEED_CAP) this.vx = -5 * MOVE_SPEED_CAP
+        if (this.vy < -this.jumpSpeed) this.vy = -this.jumpSpeed
+        console.log(this.vx + "   " + this.vy)
+    }
+    stunned(duration) {
+        this.stun_duration = duration;
+    }
     //controlling
     moveHorizontal(dirX) {
+        if (this.stun_duration > 0) return;
         let acceleration = dirX * this.acceleration * (this.isOnAir ? 0.15 : 1);
         if (this.isWallMounted) {
             if (((this.isWallMounted.dir == "LEFT" && acceleration > 0) || (this.isWallMounted.dir == "RIGHT" && acceleration < 0)) && this.walljump_cd <= 0) {
@@ -69,6 +83,7 @@ class Character {
     }
 
     wallJump() {
+        if (this.stun_duration > 0) return;
         if (this.isWallMounted != null && this.walljump_cd <= 0) {
             this.y -= 5;
             this.vy = -this.jumpSpeed
@@ -83,13 +98,14 @@ class Character {
         }
     }
     jump() {
+        if (this.stun_duration > 0) return;
         if (!this.isOnAir && this.jump_cd <= 0) {
             this.y -= 5;
             this.vy = -this.jumpSpeed
             this.isOnAir = true;
             this.jump_cd = JUMP_COOLDOWN
             this.walljump_cd = JUMP_COOLDOWN
-            if(resources)
+            if (resources)
                 resources.getJumpSound().play()
         } else if (this.isWallMounted) this.wallJump()
     }
