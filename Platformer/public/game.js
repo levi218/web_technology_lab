@@ -102,12 +102,25 @@ class Game {
             .then(response => response.json())
             .then(map => game.initMap(map))
             .then(() => {
+                // save start time
+                this.level_start_time = new Date();
+                let current_high = localStorage.getItem("hs_"+this.current_level);
+                if(current_high) document.getElementById("highscore").innerHTML = parseInt(current_high)/1000 + " s";
+                else document.getElementById("highscore").innerHTML = "0 s";
                 // game cycle
                 this.game_cycle = setInterval(() => {
                     if (game.gameover) {
                         clearInterval(this.game_cycle);
                         if (this.current_level + 1 < maps.length) {
                             alert("Completed level " + (this.current_level + 1))
+                            // save complete time to highscore
+                            let completed_in = new Date() - this.level_start_time;
+                            let current_high = localStorage.getItem("hs_"+this.current_level);
+                            if(current_high == null){
+                                localStorage.setItem("hs_"+this.current_level,completed_in);
+                            }else if(parseInt(current_high)>completed_in){
+                                localStorage.setItem("hs_"+this.current_level,completed_in);
+                            }
                             // load next level
                             this.current_level++;
                             this.start();
@@ -119,6 +132,8 @@ class Game {
                     game.processInput()
                     game.update();
                     game.render();
+                    // update UI
+                    document.getElementById("score").innerHTML = (new Date()- this.level_start_time)/1000 + " s";
                 }, DELTA_TIME);
 
             })

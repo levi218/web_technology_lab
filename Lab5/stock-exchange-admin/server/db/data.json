@@ -1,6 +1,6 @@
 {
     "settings": {
-        "start_time": "09:00",
+        "start_time": "08:00",
         "end_time": "22:00",
         "recalculate_interval": 15,
         "enabledExchange": true
@@ -77,6 +77,14 @@
             "share_price": 97.73064030967046,
             "prev_price": 99.44001652033346,
             "last_change": -1.7190023397808458
+        },
+        {
+            "symbol": "VIMS",
+            "name": "stock 3745",
+            "distribution_law": "uniform",
+            "max_change": 2.29,
+            "share_available": 102,
+            "share_price": 3902
         }
     ]
 }
