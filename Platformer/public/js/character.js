@@ -3,8 +3,8 @@ class Character {
         console.log("character created")
         this.x = x;
         this.y = y;
-        this.width = CELL_SIZE*0.8;
-        this.height = CELL_SIZE*0.8;
+        this.width = CELL_SIZE * 0.8;
+        this.height = CELL_SIZE * 0.8;
         this.vx = 0;
         this.vy = 0;
         this.acceleration = ACCELERATION;
@@ -105,8 +105,8 @@ class Character {
             this.isOnAir = true;
             this.jump_cd = JUMP_COOLDOWN
             this.walljump_cd = JUMP_COOLDOWN
-            if (resources)
-                resources.getJumpSound().play()
+            if (soundManager)
+                soundManager.playJumpSound();
         } else if (this.isWallMounted) this.wallJump()
     }
 }

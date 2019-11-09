@@ -58,7 +58,7 @@ class Game {
         //render
         this.map.render(canvas, this.viewport);
         this.door.render(canvas, this.viewport);
-        if(this.current_level==0){
+        if (this.current_level == 0) {
             this.drawTitle()
             this.drawScoreboard()
         }
@@ -66,39 +66,39 @@ class Game {
         for (let enemy of this.enemies) {
             enemy.render(canvas, this.viewport);
         }
-        
+
     }
-    drawTitle(){
+    drawTitle() {
         let ctx = canvas.getContext("2d");
         let offset = { x: +this.viewport.x - this.viewport.width / 2, y: +this.viewport.y - this.viewport.height / 2 }
         ctx.textAlign = "center"
         ctx.font = 'bold 72px calibri';
         ctx.fillStyle = '#6BC298'
-        ctx.fillText("DODGE AND JUMP",CELL_SIZE*18-offset.x,CELL_SIZE*9-offset.y);
-        ctx.strokeText("DODGE AND JUMP",CELL_SIZE*18-offset.x,CELL_SIZE*9-offset.y);
+        ctx.fillText("DODGE AND JUMP", CELL_SIZE * 18 - offset.x, CELL_SIZE * 9 - offset.y);
+        ctx.strokeText("DODGE AND JUMP", CELL_SIZE * 18 - offset.x, CELL_SIZE * 9 - offset.y);
         ctx.fillStyle = '#4A876A'
         ctx.font = 'bold 35px calibri';
-        ctx.fillText("◀HIGH SCORE       -       START GAME▶",CELL_SIZE*18-offset.x,CELL_SIZE*11-offset.y)
+        ctx.fillText("◀HIGH SCORE       -       START GAME▶", CELL_SIZE * 18 - offset.x, CELL_SIZE * 11 - offset.y)
     }
     drawScoreboard() {
         let ctx = canvas.getContext("2d");
         let offset = { x: +this.viewport.x - this.viewport.width / 2, y: +this.viewport.y - this.viewport.height / 2 }
-        ctx.strokeRect(CELL_SIZE*2-offset.x,CELL_SIZE*2-offset.y,CELL_SIZE*5, CELL_SIZE*9);
+        ctx.strokeRect(CELL_SIZE * 2 - offset.x, CELL_SIZE * 2 - offset.y, CELL_SIZE * 5, CELL_SIZE * 9);
         ctx.fillStyle = '#FFF099'
-        ctx.fillRect(CELL_SIZE*2-offset.x,CELL_SIZE*2-offset.y,CELL_SIZE*5, CELL_SIZE*9);
+        ctx.fillRect(CELL_SIZE * 2 - offset.x, CELL_SIZE * 2 - offset.y, CELL_SIZE * 5, CELL_SIZE * 9);
         ctx.fillStyle = '#8A6C4C'
         ctx.textAlign = "center"
         ctx.font = 'bold 27px calibri';
-        ctx.fillText("HIGHSCORE",CELL_SIZE*4.5-offset.x,CELL_SIZE*3-offset.y);
+        ctx.fillText("HIGHSCORE", CELL_SIZE * 4.5 - offset.x, CELL_SIZE * 3 - offset.y);
 
         let i = 0;
         ctx.font = 'normal 22px calibri';
-        for(let entry of this.scoreManager.highscoreBoard){
+        for (let entry of this.scoreManager.highscoreBoard) {
             ctx.textAlign = 'left'
-            ctx.fillText((i+1)+". "+entry.name,CELL_SIZE*2.5-offset.x,CELL_SIZE*(i+4)-offset.y);  
+            ctx.fillText((i + 1) + ". " + entry.name, CELL_SIZE * 2.5 - offset.x, CELL_SIZE * (i + 4) - offset.y);
             ctx.textAlign = 'right'
-            ctx.fillText(parseFloat(entry.score).toFixed(1)+" s",CELL_SIZE*6.5-offset.x,CELL_SIZE*(i+4)-offset.y);  
-              
+            ctx.fillText(parseFloat(entry.score).toFixed(1) + " s", CELL_SIZE * 6.5 - offset.x, CELL_SIZE * (i + 4) - offset.y);
+
             i++;
         }
     }
@@ -109,6 +109,13 @@ class Game {
             if (this.isHolding.up) this.character.jump();
         }
     }
+    loadLevel(level) {
+        if (this.game_cycle) {
+            clearInterval(this.game_cycle)
+            this.current_level = 0;
+            this.start();
+        }
+    }
     start() {
         var maps = ["map0.json", "map2.json", "map1.json"]
         var loading = fetch(maps[this.current_level])
@@ -116,24 +123,24 @@ class Game {
             .then(map => game.initMap(map))
             .then(() => {
                 // save start time
-                if(this.current_level==1)
+                if (this.current_level == 1)
                     this._start_time = new Date();
                 // game cycle
                 this.game_cycle = setInterval(() => {
                     if (game.gameover) {
                         clearInterval(this.game_cycle);
                         if (this.current_level + 1 < maps.length) {
-                            if(this.current_level!=0)
-                                alert("Level " + (this.current_level )+" completed!")
+                            if (this.current_level != 0)
+                                alert("Level " + (this.current_level) + " completed!")
                             // load next level
                             this.current_level++;
                             this.start();
                             return;
                         } else {
-                            let total_time = (new Date()-this._start_time)/1000;
+                            let total_time = (new Date() - this._start_time) / 1000;
                             let name = prompt("You won! Enter your name:");
-                            this.scoreManager.registerScore(name,total_time);
-                            this.current_level=0;
+                            this.scoreManager.registerScore(name, total_time);
+                            this.current_level = 0;
                             this.start();
                             return;
                         }
