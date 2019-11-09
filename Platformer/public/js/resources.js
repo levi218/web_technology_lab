@@ -1,16 +1,10 @@
 class Resources {
     constructor() {
-        this.tiles = new Image();
-        this.tiles.src = "tiles.png"
 
         this.character = new Image();
-        this.character.src = "character.png"
+        this.character.src = "images/character.png"
 
         this.jumpSound = new Audio('jump.wav')
-    }
-    getTile() {
-        //while (!this.tiles_ready);
-        return this.tiles;
     }
     getChar() {
         //while (!this.character_ready);

@@ -6,33 +6,26 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title></title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
-    <script src='main.js'></script>
 </head>
 
 <body>
-    <div>
-        <span>Current fastest time: </span>
-        <span id="highscore"></span>
-    </div>
-    <div>
-        <span>Time since level start: </span>
-        <span id="score"></span>
-    </div>
     <canvas id="canvas" width="1000" height="800"></canvas>
-    <script src="constants.js"></script>
-    <script src="utilities.js"></script>
-    <script src="map.js"></script>
-    <script src="character.js"></script>
-    <script src="enemy.js"></script>
-    <script src="physics.js"></script>
-    <script src="door.js"></script>
-    <script src="resources.js"></script>
-    <script src="game.js"></script>
+
+    <script src="js/constants.js"></script>
+    <script src="js/utilities.js"></script>
+    <script src="js/tileset.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/scoreManager.js"></script>
+    <script src="js/character.js"></script>
+    <script src="js/enemy.js"></script>
+    <script src="js/physics.js"></script>
+    <script src="js/door.js"></script>
+    <script src="js/resources.js"></script>
+    <script src="js/game.js"></script>
     <script>
         // init objects and render
         var canvas = document.getElementById("canvas");
-        var maps = ["map1.map.js", "map2.map.js"]
+        
         var resources = new Resources();
         var game = new Game(canvas);
 

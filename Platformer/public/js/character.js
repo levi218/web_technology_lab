@@ -3,8 +3,8 @@ class Character {
         console.log("character created")
         this.x = x;
         this.y = y;
-        this.width = CELL_SIZE * 3 / 4;
-        this.height = CELL_SIZE * 3 / 4;
+        this.width = CELL_SIZE*0.8;
+        this.height = CELL_SIZE*0.8;
         this.vx = 0;
         this.vy = 0;
         this.acceleration = ACCELERATION;

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="2019.10.30" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="15" height="30" tilewidth="64" tileheight="64" infinite="0" nextlayerid="10" nextobjectid="11">
+ <editorsettings>
+  <export target="public/map2.json" format="json"/>
+ </editorsettings>
+ <tileset firstgid="1" source="platformPack_tilesheet.tsx"/>
+ <imagelayer id="2" name="background" visible="0" opacity="0.7">
+  <image source="public/images/backgroundColorGrass.png" width="1024" height="1024"/>
+ </imagelayer>
+ <group id="8" name="enemies">
+  <objectgroup id="5" name="enemy1">
+   <object id="3" name="path" type="path" x="218.45" y="10721.1">
+    <polygon points="71.2739,-10059.8 666.291,-10055.3"/>
+   </object>
+   <object id="4" name="enemy" gid="11" x="202.502" y="703.706" width="64" height="64"/>
+  </objectgroup>
+  <objectgroup id="9" name="enemy2">
+   <object id="9" name="path" type="path" x="149.79" y="1003.82">
+    <polygon points="0,0 581.276,-4.47136 740.009,534.327 -17.8854,353.237"/>
+   </object>
+   <object id="10" name="enemy" gid="26" x="868.978" y="1556.73" width="64" height="64"/>
+  </objectgroup>
+ </group>
+ <layer id="1" name="obstacle" width="15" height="30">
+  <data encoding="csv">
+4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+4,0,0,0,0,0,0,0,0,0,0,0,0,0,4,
+4,0,0,0,0,0,0,0,0,0,0,0,0,0,4,
+4,0,0,0,0,0,0,0,0,0,0,0,0,0,4,
+4,0,0,0,0,0,0,0,0,0,0,0,0,0,4,
+4,0,0,0,0,0,0,29,0,0,0,0,0,0,4,
+4,0,0,29,29,0,0,0,0,0,1,1,1,1,4,
+4,0,0,0,0,0,0,0,0,0,0,0,0,0,4,
+4,1,0,0,0,0,0,0,0,0,0,0,0,0,4,
+4,4,1,0,0,0,0,0,0,0,0,0,0,0,4,
+4,4,4,1,0,0,29,0,0,29,0,0,29,0,4,
+4,0,0,0,0,0,0,0,0,0,0,0,0,0,4,
+4,0,0,0,0,0,0,0,0,0,0,0,0,29,4,
+4,0,0,0,0,0,0,0,0,0,0,0,0,0,4,
+4,0,0,0,0,0,0,0,0,0,0,0,29,0,4,
+4,0,29,0,0,0,29,0,0,0,29,0,0,0,4,
+4,0,0,0,0,0,0,0,0,0,0,0,0,0,4,
+4,0,0,29,0,0,0,0,0,0,0,0,0,0,4,
+4,0,0,0,0,0,0,0,0,0,0,0,0,0,4,
+4,0,29,0,0,0,0,0,0,0,0,0,0,0,4,
+4,0,0,0,0,0,0,0,0,0,0,0,0,0,4,
+4,1,1,1,1,1,0,0,0,0,0,0,0,0,4,
+4,0,0,0,0,0,0,0,0,0,0,0,0,0,4,
+4,0,0,0,0,0,1,1,1,1,0,0,0,0,4,
+4,0,0,0,0,0,0,0,0,0,0,0,1,1,4,
+4,0,0,0,0,0,0,0,0,0,0,0,4,4,4,
+4,0,0,0,0,0,0,0,0,0,1,1,4,4,4,
+4,0,0,0,0,0,0,1,1,1,4,4,4,4,4,
+4,1,1,1,1,1,1,4,4,4,4,4,4,4,4
+</data>
+ </layer>
+ <objectgroup id="7" name="pins">
+  <object id="6" name="spawn_point" x="140.79" y="1782.23">
+   <point/>
+  </object>
+  <object id="8" name="door" gid="80" x="770.608" y="447.836" width="64" height="64"/>
+ </objectgroup>
+</map>
