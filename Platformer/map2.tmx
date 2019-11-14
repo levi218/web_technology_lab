@@ -9,10 +9,10 @@
  </imagelayer>
  <group id="8" name="enemies">
   <objectgroup id="5" name="enemy1">
-   <object id="3" name="path" type="path" x="218.45" y="10721.1">
-    <polygon points="71.2739,-10059.8 666.291,-10055.3"/>
+   <object id="3" name="path" type="path" x="467.736" y="2.03007e+06">
+    <polygon points="0.842549,-2.0292e+06 7.87642,-2.0283e+06"/>
    </object>
-   <object id="4" name="enemy" gid="11" x="202.502" y="703.706" width="64" height="64"/>
+   <object id="4" name="enemy" gid="11" x="439.484" y="904.917" width="64" height="64"/>
   </objectgroup>
   <objectgroup id="9" name="enemy2">
    <object id="9" name="path" type="path" x="149.79" y="1003.82">
@@ -34,7 +34,7 @@
 4,0,0,0,0,0,0,0,0,0,0,0,0,0,4,
 4,1,0,0,0,0,0,0,0,0,0,0,0,0,4,
 4,4,1,0,0,0,0,0,0,0,0,0,0,0,4,
-4,4,4,1,0,0,29,0,0,29,0,0,29,0,4,
+4,4,4,1,1,1,1,1,1,1,1,1,1,1,4,
 4,0,0,0,0,0,0,0,0,0,0,0,0,0,4,
 4,0,0,0,0,0,0,0,0,0,0,0,0,29,4,
 4,0,0,0,0,0,0,0,0,0,0,0,0,0,4,
@@ -59,6 +59,6 @@
   <object id="6" name="spawn_point" x="140.79" y="1782.23">
    <point/>
   </object>
-  <object id="8" name="door" gid="80" x="770.608" y="447.836" width="64" height="64"/>
+  <object id="8" name="door" gid="80" x="772.844" y="953.099" width="64" height="64"/>
  </objectgroup>
 </map>
