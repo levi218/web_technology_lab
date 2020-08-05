@@ -33,7 +33,7 @@
     "connect-ensure-login": "^0.1.1",
     "cookie-parser": "^1.4.4",
     "express": "^4.17.1",
-    "express-fileupload": "^1.1.6-alpha.5",
+    "express-fileupload": "^1.1.9",
     "express-session": "^1.16.2",
     "fs": "0.0.1-security",
     "gulp-csso": "^3.0.1",
