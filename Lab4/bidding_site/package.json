@@ -42,7 +42,7 @@
     "gulp-livereload": "^4.0.2",
     "gulp-pug": "^4.0.1",
     "jquery": "^3.4.1",
-    "jquery-ui": "^1.12.1",
+    "jquery-ui": "^1.13.0",
     "morgan": "^1.9.1",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
